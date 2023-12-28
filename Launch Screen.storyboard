@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Poppins-SemiBold.ttf">
+            <string>Poppins-SemiBold</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Asset 8.png" translatesAutoresizingMaskIntoConstraints="NO" id="8YF-pF-FBs">
+                                <rect key="frame" x="91.666666666666686" y="333.66666666666669" width="210" height="210.00000000000006"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="210" id="QU0-Qd-yCr"/>
+                                    <constraint firstAttribute="height" constant="210" id="fhX-ev-cXs"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MITAWAY AB" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xx8-cL-56p">
+                                <rect key="frame" x="0.0" y="757" width="393" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="Jcn-D6-Yce"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Poppins-SemiBold" family="Poppins" pointSize="18"/>
+                                <color key="textColor" name="AccentColor"/>
+                                <color key="highlightedColor" name="AccentColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="xx8-cL-56p" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="DJ9-EP-ZXQ"/>
+                            <constraint firstItem="8YF-pF-FBs" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="ETZ-O8-REG"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="xx8-cL-56p" secondAttribute="trailing" id="Ezf-4R-Edx"/>
+                            <constraint firstItem="xx8-cL-56p" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="Gbn-3h-Z1n"/>
+                            <constraint firstItem="8YF-pF-FBs" firstAttribute="centerY" secondItem="Bcu-3y-fUS" secondAttribute="centerY" id="Glj-ab-hAa"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="xx8-cL-56p" secondAttribute="bottom" constant="40" id="NNj-Lr-6uE"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="52.671755725190835" y="374.64788732394368"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Asset 8.png" width="2046" height="1848"/>
+        <namedColor name="AccentColor">
+            <color red="0.11800000071525574" green="0.45100000500679016" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "437527695659",
+    "project_id": "tappme-3c2e0",
+    "storage_bucket": "tappme-3c2e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437527695659:android:91fcc1dc402786fa7a756e",
+        "android_client_info": {
+          "package_name": "com.app.tappme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "437527695659-6v4gjjjn31a5c2b6b460a11lkksurkgo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.tappme",
+            "certificate_hash": "1278b8c34a7b768a7df19296308796075b5b5201"
+          }
+        },
+        {
+          "client_id": "437527695659-8p43km4hcr5dcoagslro88cc8va6jk00.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVe0FY0cGyvvNmpEkwIYn1ERFsjheJMD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "437527695659-8p43km4hcr5dcoagslro88cc8va6jk00.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "437527695659-o8lqveo3daqdte521n9lbjejpel7lpu9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mipl.com.tapp-me"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

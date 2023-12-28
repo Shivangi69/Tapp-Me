@@ -1,0 +1,41 @@
+{
+  "pins" : [
+    {
+      "identity" : "facebook-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/facebook/facebook-ios-sdk",
+      "state" : {
+        "revision" : "c46ba480e9b176a950c428b1a1ec3fd57810f8fe",
+        "version" : "11.2.1"
+      }
+    },
+    {
+      "identity" : "languagemanager-swiftui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Abedalkareem/LanguageManager-SwiftUI.git",
+      "state" : {
+        "revision" : "429ce35c2f82f05d69a6042f50ff622fc0422704",
+        "version" : "0.0.6"
+      }
+    },
+    {
+      "identity" : "stream-chat-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/GetStream/stream-chat-swift.git",
+      "state" : {
+        "revision" : "9fddf4f7b8a08360b0dd2b451b36f37d43320695",
+        "version" : "4.54.0"
+      }
+    },
+    {
+      "identity" : "stream-chat-swiftui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/getstream/stream-chat-swiftui",
+      "state" : {
+        "revision" : "bc6f909ddb0c0a5633ab3e1fdd15466ac66f5402",
+        "version" : "4.54.0"
+      }
+    }
+  ],
+  "version" : 2
+}
