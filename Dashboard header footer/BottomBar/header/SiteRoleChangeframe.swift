@@ -16,7 +16,7 @@ struct SiteRoleChangeframe: View {
     
     
     var body: some View {
-        if (UserDefaults.standard.bool(forKey: "Checkedin") == true) {
+        if (UserDefaults.standard.bool(forKey: "Checkedin") == true){
         if (UserDefaults.standard.string(forKey: "MainRole") == "SUPERVISOR")  {
             
             HStack(alignment: .center, spacing: 10) {

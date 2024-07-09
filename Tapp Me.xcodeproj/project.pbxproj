@@ -46,6 +46,7 @@
 		084ACE9A2B4D324E00B1612D /* WorkerSubmittedReports.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084ACE992B4D324E00B1612D /* WorkerSubmittedReports.swift */; };
 		084ACE9E2B4D65E000B1612D /* WorkerReportsubmitDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084ACE9D2B4D65E000B1612D /* WorkerReportsubmitDescription.swift */; };
 		084ACEA02B4D65F200B1612D /* WorkerReportDraftDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084ACE9F2B4D65F200B1612D /* WorkerReportDraftDescription.swift */; };
+		084AECDB2C366BC900C8A5BF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 084AECDA2C366BC900C8A5BF /* GoogleService-Info.plist */; };
 		08518CFD2BDA325600F3142F /* GeneralSubmitReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08518CFC2BDA325500F3142F /* GeneralSubmitReport.swift */; };
 		08518CFF2BDA326F00F3142F /* GeneralDraftReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08518CFE2BDA326F00F3142F /* GeneralDraftReport.swift */; };
 		08522BFE2B8DB87700C026CB /* CreateNewTaskVm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08522BFD2B8DB87700C026CB /* CreateNewTaskVm.swift */; };
@@ -73,7 +74,6 @@
 		08747A092B3D9C4900F28392 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08747A082B3D9C4900F28392 /* Assets.xcassets */; };
 		08747A0C2B3D9C4900F28392 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08747A0B2B3D9C4900F28392 /* Preview Assets.xcassets */; };
 		08747A162B3D9CC600F28392 /* Poppins in Resources */ = {isa = PBXBuildFile; fileRef = 08747A152B3D9CC600F28392 /* Poppins */; };
-		08750FD72B7B361D00B43A1B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 08750FD62B7B361D00B43A1B /* GoogleService-Info.plist */; };
 		0876FC332BDCC0A80022C451 /* GeneralReportsupersubmit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0876FC322BDCC0A80022C451 /* GeneralReportsupersubmit.swift */; };
 		087C54A62BC556B800AEDA19 /* MyCompletedTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087C54A52BC556B800AEDA19 /* MyCompletedTask.swift */; };
 		087CF5A52B85B54A00328E96 /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087CF5A42B85B54A00328E96 /* KeyboardResponder.swift */; };
@@ -208,6 +208,7 @@
 		084ACE992B4D324E00B1612D /* WorkerSubmittedReports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkerSubmittedReports.swift; sourceTree = "<group>"; };
 		084ACE9D2B4D65E000B1612D /* WorkerReportsubmitDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkerReportsubmitDescription.swift; sourceTree = "<group>"; };
 		084ACE9F2B4D65F200B1612D /* WorkerReportDraftDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkerReportDraftDescription.swift; sourceTree = "<group>"; };
+		084AECDA2C366BC900C8A5BF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		08518CFC2BDA325500F3142F /* GeneralSubmitReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSubmitReport.swift; sourceTree = "<group>"; };
 		08518CFE2BDA326F00F3142F /* GeneralDraftReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralDraftReport.swift; sourceTree = "<group>"; };
 		08522BFD2B8DB87700C026CB /* CreateNewTaskVm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewTaskVm.swift; sourceTree = "<group>"; };
@@ -244,7 +245,6 @@
 		08747A0B2B3D9C4900F28392 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		08747A152B3D9CC600F28392 /* Poppins */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Poppins; sourceTree = "<group>"; };
 		08747A172B3D9CD300F28392 /* Tapp-Me-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Tapp-Me-Info.plist"; sourceTree = SOURCE_ROOT; };
-		08750FD62B7B361D00B43A1B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0876FC322BDCC0A80022C451 /* GeneralReportsupersubmit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralReportsupersubmit.swift; sourceTree = "<group>"; };
 		087C54A52BC556B800AEDA19 /* MyCompletedTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCompletedTask.swift; sourceTree = "<group>"; };
 		087CF5A42B85B54A00328E96 /* KeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponder.swift; sourceTree = "<group>"; };
@@ -560,7 +560,7 @@
 			children = (
 				082043572BEB648600611002 /* New Group */,
 				085694832BE4F335002DCF7E /* ChatController */,
-				08750FD62B7B361D00B43A1B /* GoogleService-Info.plist */,
+				084AECDA2C366BC900C8A5BF /* GoogleService-Info.plist */,
 				08D92CE62B622C6B002E3FD3 /* AppDelegate.swift */,
 				0873293D2B3EAA79003DDC9E /* Launch Screen.storyboard */,
 				08133CC92BFDC24F00251951 /* YRL6BSM-siren.mp3 */,
@@ -1107,7 +1107,7 @@
 				0820435D2BEB64A500611002 /* View in Resources */,
 				0820435F2BEB64A500611002 /* Model in Resources */,
 				08747A092B3D9C4900F28392 /* Assets.xcassets in Resources */,
-				08750FD72B7B361D00B43A1B /* GoogleService-Info.plist in Resources */,
+				084AECDB2C366BC900C8A5BF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1466,9 +1466,9 @@
 				CODE_SIGN_ENTITLEMENTS = "Tapp Me/Tapp Me.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.4;
+				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEVELOPMENT_ASSET_PATHS = "\"Tapp Me/Preview Content\"";
-				DEVELOPMENT_TEAM = VZNDPQUZYP;
+				DEVELOPMENT_TEAM = 82CM7DF255;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1476,7 +1476,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = TappMe;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "This is used for taking picture";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We require access to your camera so you can easily take a photo for your profile picture.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Your app needs access to your location to provide location-based services even when the app is running in the background.";
 				INFOPLIST_KEY_NSLocationUsageDescription = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your app needs access to your location to show your current position on the map.";
@@ -1491,9 +1491,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.0.0;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "mipl.com.tapp-me";
+				PRODUCT_BUNDLE_IDENTIFIER = mipl.com.tappme;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1514,9 +1514,9 @@
 				CODE_SIGN_ENTITLEMENTS = "Tapp Me/Tapp Me.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.4;
+				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEVELOPMENT_ASSET_PATHS = "\"Tapp Me/Preview Content\"";
-				DEVELOPMENT_TEAM = VZNDPQUZYP;
+				DEVELOPMENT_TEAM = 82CM7DF255;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1524,7 +1524,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = TappMe;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "This is used for taking picture";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We require access to your camera so you can easily take a photo for your profile picture.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Your app needs access to your location to provide location-based services even when the app is running in the background.";
 				INFOPLIST_KEY_NSLocationUsageDescription = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your app needs access to your location to show your current position on the map.";
@@ -1539,9 +1539,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.0.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "mipl.com.tapp-me";
+				PRODUCT_BUNDLE_IDENTIFIER = mipl.com.tappme;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

@@ -257,13 +257,30 @@ struct WorkerSetting: View {
                                         }) {
                                             HStack {
                                                 
-                                                Text("Privacy Policy")
-                                                    .foregroundColor(.black)
-                                                    .lineLimit(1)
-                                                
-                                                    .font(Font.custom("Poppins-Black", size: Responsiveframes.responsiveFontSize(2.0)))
-                                                //
-                                                
+//                                                if #available(iOS 16.0, *) {
+//                                                    Text("Privacy Policy")
+//                                                    
+//                                                        .lineLimit(1)
+//                                                        .foregroundColor(.blue)
+//                                                        .underline()
+//                                                        .font(Font.custom("Poppins-Black", size: Responsiveframes.responsiveFontSize(2.0)))
+//                                                }
+                                                VStack(alignment: .leading, spacing: 0) {
+                                                        
+                                                        Text("Privacy Policy")
+                                                        
+                                                            .lineLimit(1)
+                                                            .foregroundColor(.blue)
+                                                            .font(Font.custom("Poppins-Black", size: Responsiveframes.responsiveFontSize(2.0)))
+                                                        
+                                                        
+                                                        Divider()
+                                                            .background(Color.blue)
+                                                            .frame( height: 1)
+                                                            
+                                                        
+                                                    }
+                                        
                                                 Spacer()
                                             }
                                         }
@@ -278,25 +295,37 @@ struct WorkerSetting: View {
                                         
                                     }
                                     .padding()
-                                    .frame(width: Responsiveframes.widthPercentageToDP(75), height: Responsiveframes.heightPercentageToDP(9))
+                                    .frame(width: Responsiveframes.widthPercentageToDP(37), height: Responsiveframes.heightPercentageToDP(9))
                                     
                                     
                                     
                                     VStack {
                                         Button(action: {
                                             TermandConditions.toggle()
-                                            //                                               // showTasks.toggle()
-                                            //                                            }
+                                           
                                         }) {
-                                            HStack {
-                                                
+                                          
+                                            
+                                            
+                                            
+                                            VStack(alignment: .leading, spacing: 0) {
+                                                    
                                                 Text("Terms and Conditions")
-                                                    .foregroundColor(.black)
+                                                    .foregroundColor(.blue)
                                                     .lineLimit(1)
+                                                 
                                                 
                                                     .font(Font.custom("Poppins-Black", size: Responsiveframes.responsiveFontSize(2.0)))
-                                                Spacer()
-                                            }
+                                           
+                                                    
+                                                    
+                                                    Divider()
+                                                        .background(Color.blue)
+                                                        .frame( height: 1)
+                                                        
+                                                    
+                                                }
+                                            Spacer()
                                         }
                                         
                                         .onTapGesture {
@@ -309,7 +338,7 @@ struct WorkerSetting: View {
                                         
                                     }
                                     .padding()
-                                    .frame(width: Responsiveframes.widthPercentageToDP(75), height: Responsiveframes.heightPercentageToDP(9))
+                                    .frame(width: Responsiveframes.widthPercentageToDP(50), height: Responsiveframes.heightPercentageToDP(9))
                                     
                                     VStack {
                                         Button(action: {
@@ -317,15 +346,25 @@ struct WorkerSetting: View {
                                             //                                               // showTasks.toggle()
                                             //                                            }
                                         }) {
-                                            HStack {
-                                                
-                                                Text("About")
-                                                    .foregroundColor(.black)
+                                            VStack(alignment: .leading, spacing: 0) {
+                                                    
+                                                Text("App Info")
+                                                    .foregroundColor(.blue)
                                                     .lineLimit(1)
+                                                 
                                                 
                                                     .font(Font.custom("Poppins-Black", size: Responsiveframes.responsiveFontSize(2.0)))
-                                                Spacer()
-                                            }
+                                           
+                                                    
+                                                    
+                                                    Divider()
+                                                        .background(Color.blue)
+                                                        .frame(height: 1)
+                                                        
+                                                    
+                                                }
+                                          
+                                            Spacer()
                                         }
                                         
                                         .onTapGesture {
@@ -339,7 +378,7 @@ struct WorkerSetting: View {
                                         
                                     }
                                     .padding()
-                                    .frame(width: Responsiveframes.widthPercentageToDP(75), height: Responsiveframes.heightPercentageToDP(9))
+                                    .frame(width: Responsiveframes.widthPercentageToDP(27), height: Responsiveframes.heightPercentageToDP(9))
                                     
                                 }
                             }

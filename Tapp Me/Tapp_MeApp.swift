@@ -40,8 +40,9 @@ struct Tapp_MeApp: App {
             LanguageManagerView(.deviceLanguage) {
               ContentView()
                 .transition(.slide) 
-                .background(AlertPresenter()) // Ensure AlertPresenter is part of the view hierarchy
-// The animation that will be happening when the language change.
+                .background(AlertPresenter())
+                .environmentObject(appDelegate.WorkerCheckvm)
+
             }
             
            // ContentView()

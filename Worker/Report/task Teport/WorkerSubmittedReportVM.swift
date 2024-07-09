@@ -159,7 +159,6 @@ class WorkerSubmittedReportVM: ObservableObject {
                                
                           self.Notificationlist.append(acc1)
                                
-                               print("datapring", self.Notificationlist )
                            }
                        
                        if let notificationCount = events["notificationCount"].int {

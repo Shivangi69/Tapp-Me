@@ -80,8 +80,7 @@ struct WorkkerCheckin: View {
                                 }
                                 
                             }
-                            
-                            
+                      
                             
                             VStack{
                                 
@@ -234,18 +233,18 @@ struct WorkkerCheckin: View {
                                 HStack(spacing:5){
                                     
                                     HStack{
-                                        if statuscheck.homemodel?.isWorkerCheckedIn == false && UserDefaults.standard.bool(forKey: "isWorkerCheckedOut") == false {
+                                        if statuscheck.homemodel?.isCheckInApproved == false &&   UserDefaults.standard.bool(forKey: "isWorkerCheckedOut") == false {
                                             
                                             Button(action: {
                                                 
                                                 if isWithinPolygons == false {
                                                     isshowingoutoftheboudary = true
                                                 }else{
-                                                    if statuscheck.homemodel?.isWorkerCheckedIn == false {
+                                                    if statuscheck.homemodel?.isCheckInApproved == false {
                                                         isShowingPopupCheckin = true
                                                     }
                                                     
-                                                    else if statuscheck.homemodel?.isWorkerCheckedIn == true {
+                                                    else if statuscheck.homemodel?.isCheckInApproved == true {
                                                         isShowingPopupCheckin = false
                                                         
                                                     }
@@ -286,7 +285,7 @@ struct WorkkerCheckin: View {
                                         }
 //                                        if statuscheck.homemodel?.isWorkerCheckedIn == true && statuscheck.homemodel?.isWorkerCheckedOut == false {
                                             
-                                        if UserDefaults.standard.bool(forKey: "isWorkerCheckedIn") == true  && UserDefaults.standard.bool(forKey: "isWorkerCheckedOut") == false  {
+                                        if UserDefaults.standard.bool(forKey: "isWorkerCheckedIn") == true  &&  UserDefaults.standard.bool(forKey: "isCheckInApproved") == true  && UserDefaults.standard.bool(forKey: "isWorkerCheckedOut") == false  {
                                          //   Spacer()
                                             
                                             
@@ -309,7 +308,6 @@ struct WorkkerCheckin: View {
                                                         else{
                                                             isShowingPopupCheckout = false
                                                         }
-                                                        
                                                         
                                                         
                                                     })
@@ -367,7 +365,11 @@ struct WorkkerCheckin: View {
                                                             isShowingPopupBreak = true
                                                             isShowingPopupBreakoOFF = false
                                                         }else{
-                                                           if(isWithinPolygons == false){
+                                                            
+                                                            
+
+                                                            
+                                                           if(UserDefaults.standard.bool(forKey: "isWithinPolygons") == false){
                                                                 isshowingoutoftheboudary = true
                                                                 
                                                             }
@@ -455,7 +457,7 @@ struct WorkkerCheckin: View {
                                                         // Adjust corner radius as needed
                                                     }
                                                     .frame(width: Responsiveframes.widthPercentageToDP(60),height: Responsiveframes.heightPercentageToDP(6))
-                                                    .background(Color.blue) // Adjust background color as needed
+                                                    .background(Color.red) // Adjust background color as needed
                                                     .cornerRadius(10)
                                                     
                                                 }
@@ -463,8 +465,36 @@ struct WorkkerCheckin: View {
                                             }
                                         
                                         
+//                                        Button(action: {
+//                                           
+//                                            statuscheck.GetCheckintime()
+//                                            WorkerCheckin.getsideid()
+//
+//                                            statuscheck.GetallStatus()
+//    //                                            UserDefaults.standard.setValue(WorkerCheckin.AllCoordinateArray, forKey: "AllCoordinateArray")
+//
+//                                            
+//                                        }) {
+//                                            VStack(spacing: 8){
+//                                                Image("REFRESH")
+//                                                    .resizable()
+//                                                    .frame(width: Responsiveframes.widthPercentageToDP(9), height: Responsiveframes.heightPercentageToDP(5))
+//    //                                                    .padding()
+//                                                
+//                                                
+//                                                Text("Refresh")
+//                                                    .foregroundColor(.blue)
+//                                                    .fontWeight(.semibold)
+//                                                    .lineLimit(1)
+//                                                    .font(Font.custom("Poppins-Black", size: Responsiveframes.responsiveFontSize(1.6)))
+//                                                    .foregroundColor(.white)                                            }
+//                                            
+//                                        }
+                                        
+                                        
                                     }
-                                    .frame(width: (Responsiveframes.widthPercentageToDP(90))/3)
+                                    .frame(width: Responsiveframes.widthPercentageToDP(90))
+                                
                                 }
                                 
                                 
@@ -611,7 +641,9 @@ struct WorkkerCheckin: View {
                             noButtonLabel: "No",
                             onYesTapped: {
                                 
+                                
                                 WorkerCheckin.breakon()
+                                
                                 UserDefaults.standard.setValue("yes", forKey: "breakon")
                                 isShowingPopupBreak = false
                                 
@@ -747,9 +779,6 @@ struct WorkkerCheckin: View {
                         )
                     }
                     
-                    
-                    
-                    
                 }
                 
             }
@@ -757,17 +786,18 @@ struct WorkkerCheckin: View {
             
             .navigationBarBackButtonHidden(true)
             .navigationBarHidden(true)
-            
-            
-            
+                        
         }
         .onAppear(){
+            
+//            WorkerCheckvm.startTimer()
+            
             locationManager.startUpdatingLocation()
             getCurrentDate()
             statuscheck.currentdate = currentdate ?? ""
             print(statuscheck.currentdate)
             statuscheck.GetCheckintime()
-            
+
             statuscheck.GetallStatus()
             WorkerCheckin.showMAP = false
             WorkerCheckin.getsideid()
@@ -779,10 +809,23 @@ struct WorkkerCheckin: View {
                 }
             }
             
-            
-            
+      
+        
+                NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "CallRefreshpage"), object: nil, queue: OperationQueue.main) {_ in
+                    getCurrentDate()
+                    statuscheck.currentdate = currentdate ?? ""
+                    print(statuscheck.currentdate)
+                    statuscheck.GetCheckintime()
+                    
+                    statuscheck.GetallStatus()
+                    UserDefaults.standard.setValue(WorkerCheckin.AllCoordinateArray, forKey: "AllCoordinateArray")
+                    
+                }
+                
           }
         .onDisappear(){
+//            WorkerCheckvm.timer?.cancel()
+              
             locationManager.startUpdatingLocation()
         }
         .navigationBarBackButtonHidden(true)

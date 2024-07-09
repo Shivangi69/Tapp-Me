@@ -11,8 +11,9 @@ import Foundation
 struct HomeViewModel: Codable, Hashable {
     var isAccountBlocked, isGoogleLinked, isFacebookLinked: Bool
     var isFirstLogin, isSupervisor, isWorkerCheckedIn,isWorkerCheckedOut, isBreak: Bool
-    var isOutside, active ,isworkerovertimecheckin, status: Bool
+    var isOutside, active ,isworkerovertimecheckin, status, isCheckInApproved: Bool
     var workforceId : Int
+    
 }
 
 struct checkinmodel: Codable, Hashable {

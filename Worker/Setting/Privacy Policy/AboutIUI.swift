@@ -25,94 +25,91 @@ struct AboutIUI: View {
     
         var body: some View {
                NavigationView {
-                   VStack(spacing: 0) {
-                       // Header
-                       HStack {
-                           Button(action: {
-                               self.presentationMode.wrappedValue.dismiss()
-                           }) {
-                               Image("Arrow Left-8")
+                   
+                   ZStack{
+                       VStack(spacing: 0) {
+                           // Header
+                           HStack {
+                               Button(action: {
+                                   self.presentationMode.wrappedValue.dismiss()
+                               }) {
+                                   Image("Arrow Left-8")
+                                       .resizable()
+                                       .frame(width: 48.0, height: 48.0)
+                                       .cornerRadius(24)
+                               }
+                               Spacer()
+                               
+                               Text("App Info")
+                                   .foregroundColor(.black)
+                                   .font(.system(size: 24, weight: .bold))
+                               
+                               Spacer()
+                               
+                               Image("") // Placeholder for potential right side button or icon
                                    .resizable()
                                    .frame(width: 48.0, height: 48.0)
                                    .cornerRadius(24)
                            }
-                           Spacer()
+                           .padding()
+                           .background(Color.white)
                            
-                           Text("About Us")
-                               .foregroundColor(.black)
-                               .font(.system(size: 24, weight: .bold))
+                           Divider()
                            
-                           Spacer()
-                           
-                           Image("") // Placeholder for potential right side button or icon
-                               .resizable()
-                               .frame(width: 48.0, height: 48.0)
-                               .cornerRadius(24)
-                       }
-                       .padding()
-                       .background(Color.white)
-                       
-                       Divider()
-                       
-                       // Main content
-                       VStack {
-//                           Spacer(minLength: 20)
-                           
-                           HStack {
-                               Text("Version")
+                           // Main content
+                           VStack {
+                               //                           Spacer(minLength: 20)
+                               Spacer()
+                               
+                               Text("Tapp Me")
                                    .foregroundColor(.black)
                                    .font(.system(size: 24, weight: .bold))
-                               Text(AppInfo.version)
-                                   .foregroundColor(.black)
-                                   .font(.system(size: 24, weight: .bold))
+                               
+                               
+                               
+                               HStack {
+                                   Text("Version")
+                                       .foregroundColor(.gray)
+                                       .font(.system(size: 20))
+                                   Text(AppInfo.version)
+                                       .foregroundColor(.gray)
+                                       .font(.system(size: 20))
+                                   
+                               }
+                               
+                               
+                               //                           Spacer(minLength: 20)
+                               
+                               Image("logo")
+                                   .resizable()
+                                   .frame(width: 50, height: 50)
+                                   .cornerRadius(25)
+                                   .aspectRatio(contentMode: .fit)
+                               
+                               HStack {
+                                   Text("Build")
+                                       .foregroundColor(.black)
+                                       .font(.system(size: 20))
+                                   Text(AppInfo.build)
+                                       .foregroundColor(.black)
+                                       .font(.system(size: 20))
+                                   
+                               }
+                               
+                               
                                Spacer()
                            }
-                           .padding([.leading, .trailing])
                            
-//                           Spacer(minLength: 20)
                            
-                           HStack {
-                               Text("Build")
-                                   .foregroundColor(.black)
-                                   .font(.system(size: 24, weight: .bold))
-                               Text(AppInfo.build)
-                                   .foregroundColor(.black)
-                                   .font(.system(size: 24, weight: .bold))
-                               Spacer()
-                           }
-                           .padding([.leading, .trailing])
-                           
-                           Spacer()
                        }
-                       .background(Color("BackGroundColor"))
-                       .edgesIgnoringSafeArea(.all)
+                       
                    }
+                   .background(Color("about"))
                    .navigationBarHidden(true)
-               }
+                   
+               }  .edgesIgnoringSafeArea(.all)
            }
     
-//    func fetch() {
-//        
-//        AccountAPI.getsignin(servciename: "GetPolicy", nil) { res in
-//            switch res {
-//            case .success:
-//                print("resulllll",res)
-//                
-//                if let json = res.value{
-//                    
-//                    print("Josn",json)
-//                    
-//                    
-//                    let events = json["data"]
-//                    privaycPolicy = events["privacy"].stringValue
-//                }
-//                
-//                
-//            case let .failure(error):
-//                print(error)
-//            }
-//        }
-//    }
 }
 
 import Foundation

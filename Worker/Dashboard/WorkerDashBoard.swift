@@ -353,7 +353,7 @@ struct WorkerDashBoard: View {
                                                 
                                                 .onTapGesture {
                                                     
-                                                    if UserDefaults.standard.bool(forKey: "isWithinPolygons")  == true {
+                                                    if UserDefaults.standard.bool(forKey: "isWithinPolygons")  == true || UserDefaults.standard.bool(forKey: "isOutSide")  == true {
                                                         RequestforGeofenceoutside.toggle()
 
                                                         

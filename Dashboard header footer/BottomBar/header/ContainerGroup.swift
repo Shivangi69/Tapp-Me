@@ -45,9 +45,11 @@ struct ContainerGroup: View {
 
     @StateObject var profilemodel = ProfileVM()
 
-    @State private var workercheckin = false
+    @State  var workercheckin = false
 
     @State private var height = 15
+    @State private var btnhight : CGFloat = 6.0
+
     @State private var workerheight1 = 15
 
     @State private var spacerheight:Int = 5
@@ -56,28 +58,20 @@ struct ContainerGroup: View {
     @State private var ProfileShow = false
     
     var body: some View {
-        ZStack(alignment: .top) {
+        
+        ZStack(alignment: .top){
             
-            BottomRoundedRectangle(cornerRadius: 40)
-                      .fill(Color(red: 0.12, green: 0.45, blue: 1.00, opacity: 1.00))
-                      .frame(width: UIScreen.main.bounds.width)
-                      .edgesIgnoringSafeArea(.bottom)
-
-//            BottomRoundedRectangle(cornerRadius: 40)
-//                      .fill(Color(red: 0.12, green: 0.45, blue: 1.00, opacity: 1.00))
-//                      .frame(width: UIScreen.main.bounds.width) // Adjust height as needed
-//                      .padding()
-            
-            VStack(spacing:0){
+            VStack(alignment: .center, spacing:5){
                 
                 Spacer()
-                    .frame(height: Responsiveframes.heightPercentageToDP(CGFloat(spacerheight)))
+//                    .frame(height: Responsiveframes.heightPercentageToDP(CGFloat(spacerheight)))
                 HStack{
                     if(Profileshow == true){
                         
                         HStack{
                             Button(action: {
                                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SetProfileView"), object: self)
+                                
                             }) {
                                 AsyncImage(
                                     url: NSURL(string: UserDefaults.standard.string(forKey: "imageurlw") ?? "")! as URL,
@@ -162,32 +156,41 @@ struct ContainerGroup: View {
                  
                         VStack(alignment: .leading){
                             HStack{
-                                VStack(alignment: .leading){
+                                VStack(alignment: .leading, spacing: 5) {
                                     
                                     Text(textHeyPeterParkerText)
                                         .foregroundColor(Color(red: 1.00, green: 1.00, blue: 1.00, opacity: 1.00))
-                                        .font(ConstantClass.AppFonts.medium)
+//                                        .font(ConstantClass.AppFonts.bold)
+                                        .fontWeight(.bold)
+                                        .font(.system(size: 18))
+
                                         .lineLimit(1)
                                     //  .frame(alignment: .leading)
                                         .multilineTextAlignment(.leading)
                                     
                                     ContainerFrame(textPpText: "\(textPpText) - \(skills)")
                                     
-                                    
-                                    
                                 }
                                 Spacer()
                                 
                             }
-                            .padding(.top,10)
                             .frame(width: (Responsiveframes.widthPercentageToDP(50)))
                             
-                            if (UserDefaults.standard.bool(forKey: "Checkedin") == true) && (UserDefaults.standard.string(forKey: "MainRole") == "SUPERVISOR") &&  UserDefaults.standard.integer(forKey: "workforceId") != 0{
+                            if (UserDefaults.standard.bool(forKey: "Checkedin") == true) && (UserDefaults.standard.string(forKey: "MainRole") == "SUPERVISOR") &&  UserDefaults.standard.integer(forKey: "workforceId") != 0 &&
+                                 (UserDefaults.standard.bool(forKey: "isBreak") == false){
                                 
                                 SiteRoleChangeframe()
                             }
-                            Spacer()
+                            else if (UserDefaults.standard.bool(forKey: "Checkedin") == true) &&
+                                        (UserDefaults.standard.bool(forKey: "isWorkerOvertimeCheckIn") == true) &&
+                                        (UserDefaults.standard.string(forKey: "MainRole") == "SUPERVISOR") &&
+                                        UserDefaults.standard.integer(forKey: "workforceId") != 0 {
                             
+                                SiteRoleChangeframe()
+                                
+                            }
+                                
+//                            Spacer()
                             
                         }
                     
@@ -242,7 +245,7 @@ struct ContainerGroup: View {
                 
                 
                 
-                if workercheckin == true{
+                if workercheckin == true  {
                     HStack{
                         Button(action: {
                        //     self.presentationMode.wrappedValue.dismiss()
@@ -255,6 +258,7 @@ struct ContainerGroup: View {
                         {
                             Image("Arrow Left")
                                 .frame(width: Responsiveframes.widthPercentageToDP(8), height: Responsiveframes.heightPercentageToDP(8))
+                                .padding()
                             
                             
                         }
@@ -265,44 +269,325 @@ struct ContainerGroup: View {
                             .font(Font.custom("Poppins-Black", size: Responsiveframes.responsiveFontSize(2.5)))
                             .foregroundColor(.white)
                         
+                        Image("")
+                            .frame(width: Responsiveframes.widthPercentageToDP(8), height: Responsiveframes.heightPercentageToDP(8))
+//                            .padding()
+                        
                        Spacer()
                         
                         
                     }
+//                    .offset(y:2)
+                    .padding(.bottom,5)
                  //   .cornerRadius(15)
-                    .frame(width: UIScreen.main.bounds.width-20  )
+                    .frame(width: UIScreen.main.bounds.width-20 , height: btnhight )
                    // .cornerRadius(15)
                    // Spacer()
+                   
+                    .padding()
                 }
-                
             }
-            
+            .padding(.top)
+            .padding(.bottom)
         }
+        
         .padding()
+        .background(Color.blue)
+        .edgesIgnoringSafeArea(.bottom)
+        .frame(width: UIScreen.main.bounds.width)
         .frame(width: UIScreen.main.bounds.width - 0, height: calculateHeight())
-     //   .disabled(WorkerCheckin.siteidarray.count == 0)
-         
+        .mask(
+            CustomBottomRoundedRectangle(radius: 40, corners: [.bottomLeft, .bottomRight])
+        )
+
+        
+        
+        
+        
+        
+//        ZStack(alignment: .top) {
+//            
+//            BottomRoundedRectangle(cornerRadius: 40)
+//                      .fill(Color(red: 0.12, green: 0.45, blue: 1.00, opacity: 1.00))
+//                      .frame(width: UIScreen.main.bounds.width)
+//                      .edgesIgnoringSafeArea(.bottom)
+//
+////            BottomRoundedRectangle(cornerRadius: 40)
+////                      .fill(Color(red: 0.12, green: 0.45, blue: 1.00, opacity: 1.00))
+////                      .frame(width: UIScreen.main.bounds.width) // Adjust height as needed
+////                      .padding()
+//            
+//            VStack(spacing:0){
+//                
+//                Spacer()
+//                    .frame(height: Responsiveframes.heightPercentageToDP(CGFloat(spacerheight)))
+//                HStack{
+//                    if(Profileshow == true){
+//                        
+//                        HStack{
+//                            Button(action: {
+//                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SetProfileView"), object: self)
+//                            }) {
+//                                AsyncImage(
+//                                    url: NSURL(string: UserDefaults.standard.string(forKey: "imageurlw") ?? "")! as URL,
+//                                    placeholder: {
+//                                        Image("profileimg")
+//                                            .resizable()
+//                                            .aspectRatio(contentMode: .fit)
+//                                            .frame(width: ConstantClass.bigimagesize.notifyw, height: ConstantClass.bigimagesize.notifyH, alignment: .topLeading)
+//                                        
+//                                    },
+//                                    image: { Image(uiImage: $0).resizable() }
+//                                )
+//                                .frame(width: ConstantClass.bigimagesize.notifyw, height: ConstantClass.bigimagesize.notifyH, alignment: .topLeading)
+//                                .cornerRadius(10)
+//                                
+//                                .overlay(
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .inset(by: 0.5)
+//                                        .stroke(Color.black.opacity(0.15), lineWidth: 1)
+//                                )
+//                                
+//                                .onTapGesture {
+//                                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SetProfileView"), object: self)
+//                                }
+//                                
+//                            }
+//                            
+//                            .onTapGesture {
+//                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SetProfileView"), object: self)
+//                            }
+//                        }
+//                        
+//                        .onTapGesture {
+//                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SetProfileView"), object: self)
+//                        }
+//                        .padding()
+//                        
+//                    }else{
+//                        HStack{
+//                            Button(action: {
+//                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SetProfileView"), object: self)
+//                            }) {
+//                                AsyncImage(
+//                                    url: NSURL(string: UserDefaults.standard.string(forKey: "imageurlw") ?? "")! as URL,
+//                                    placeholder: {
+//                                        Image("profileimg")
+//                                            .resizable()
+//                                            .aspectRatio(contentMode: .fit)
+//                                            .frame(width: ConstantClass.bigimagesize.notifyw, height: ConstantClass.bigimagesize.notifyH, alignment: .topLeading)
+//                                        
+//                                    },
+//                                    image: { Image(uiImage: $0).resizable() }
+//                                )
+//                                .frame(width: ConstantClass.bigimagesize.notifyw, height: ConstantClass.bigimagesize.notifyH, alignment: .topLeading)
+//                                .cornerRadius(10)
+//                                
+//                                .overlay(
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .inset(by: 0.5)
+//                                        .stroke(Color.black.opacity(0.15), lineWidth: 1)
+//                                )
+//                                
+//                                .onTapGesture {
+//                                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SetProfileView"), object: self)
+//                                }
+//                                
+//                            }
+//                            
+//                            .onTapGesture {
+//                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SetProfileView"), object: self)
+//                            }
+//                        }
+//                        
+//                        .onTapGesture {
+//                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SetProfileView"), object: self)
+//                        }
+//                        .padding()
+//                    }
+//                    
+//                    
+//                    
+//                 
+//                        VStack(alignment: .leading){
+//                            HStack{
+//                                VStack(alignment: .leading){
+//                                    
+//                                    Text(textHeyPeterParkerText)
+//                                        .foregroundColor(Color(red: 1.00, green: 1.00, blue: 1.00, opacity: 1.00))
+//                                        .font(ConstantClass.AppFonts.medium)
+//                                        .lineLimit(1)
+//                                    //  .frame(alignment: .leading)
+//                                        .multilineTextAlignment(.leading)
+//                                    
+//                                    ContainerFrame(textPpText: "\(textPpText) - \(skills)")
+//                                    
+//                                    
+//                                    
+//                                }
+//                                Spacer()
+//                                
+//                            }
+//                            .padding(.top,10)
+//                            .frame(width: (Responsiveframes.widthPercentageToDP(50)))
+//                            
+//                            if (UserDefaults.standard.bool(forKey: "Checkedin") == true) && (UserDefaults.standard.string(forKey: "MainRole") == "SUPERVISOR") &&  UserDefaults.standard.integer(forKey: "workforceId") != 0 &&
+//                                 (UserDefaults.standard.bool(forKey: "isBreak") == false){
+//                                
+//                                SiteRoleChangeframe()
+//                            }
+//                            else if (UserDefaults.standard.bool(forKey: "Checkedin") == true) &&
+//                                        (UserDefaults.standard.bool(forKey: "isWorkerOvertimeCheckIn") == true) &&
+//                                        (UserDefaults.standard.string(forKey: "MainRole") == "SUPERVISOR") &&
+//                                        UserDefaults.standard.integer(forKey: "workforceId") != 0 {
+//                            
+//                                SiteRoleChangeframe()
+//                                
+//                            }
+//                                
+//                            Spacer()
+//                            
+//                        }
+//                    
+//              Spacer()
+//                    VStack {
+//                             Button(action: {
+//                                 print("Button tapped!")
+//          
+//                                 
+//                            //     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "callnotify"), object: self)
+//                                 
+//                                 
+//                                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SetNotificationView"), object: self)
+//                             }) {
+//                                 ZStack {
+//                                     Image(containerGroup1Path)
+//                                         .resizable()
+//                                        .aspectRatio(contentMode: .fit)
+//                                         .frame(width: ConstantClass.bigimagesize.notifywidth, height: ConstantClass.bigimagesize.notifyHeight, alignment: .topLeading)
+//                                         .cornerRadius(10)
+//                                
+//                                     Text(String(notificationlist.noticount))
+//                                             .foregroundColor(.white)
+//                                             .font(.system(size: 12))
+//                                             .padding(4)
+//                                             .background(Color.red)
+//                                             .clipShape(Circle())
+//                                             .offset(x: 10, y: -10) // Adjust position as needed
+//                                     
+//                                                   }
+//                             }
+//                             .padding()
+//                             .background(Color.white) // Set background color of the button
+//                             
+//                             .onTapGesture {
+//
+////                                 notificationlist.getallnotification()
+//                                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "SetNotificationView"), object: self)
+//                             }
+//                    }
+////                    .padding()
+//                         .background(Color.white)
+//                         .cornerRadius(10)
+//                    Spacer()
+//                         
+//                }
+//                
+//              // Spacer()
+//
+//                .frame(width: UIScreen.main.bounds.width-0)
+//                
+//                
+//                
+//                
+//                if workercheckin == true{
+//                    HStack{
+//                        Button(action: {
+//                       //     self.presentationMode.wrappedValue.dismiss()
+//                            
+//                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CALLAPI"), object: self)
+//
+//                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RemoveGpsView"), object: self)
+//                            
+//                        })
+//                        {
+//                            Image("Arrow Left")
+//                                .frame(width: Responsiveframes.widthPercentageToDP(8), height: Responsiveframes.heightPercentageToDP(8))
+//                            
+//                            
+//                        }
+//                        Spacer()
+//                        Text("GPS Attendance")
+//                            .fontWeight(.semibold)
+//                            .lineLimit(2)
+//                            .font(Font.custom("Poppins-Black", size: Responsiveframes.responsiveFontSize(2.5)))
+//                            .foregroundColor(.white)
+//                        
+//                       Spacer()
+//                        
+//                        
+//                    }
+//                 //   .cornerRadius(15)
+//                    .frame(width: UIScreen.main.bounds.width-20  )
+//                   // .cornerRadius(15)
+//                   // Spacer()
+//                }
+//                
+//            }
+//            
+//        }
+//        .padding()
+//        .frame(width: UIScreen.main.bounds.width - 0, height: calculateHeight())
+//     //   .disabled(WorkerCheckin.siteidarray.count == 0)
+//         
         
         .onAppear(){
             
-         //   NotificationCenter.default.post(name: NSNotification.Name(rawValue: "callnotify"), object: self)
 
             notificationlist.getallnotification()
             
+  
+            
+            
             if UserDefaults.standard.string(forKey: "MainRole") == "SUPERVISOR" {
-                height = 17
+                
+                if UserDefaults.standard.bool(forKey: "isCheckInApproved") == true{
+                    
+                    if  UserDefaults.standard.bool(forKey: "isBreak") == true{
+                        
+                        height = 17
+                    }else {
+                        height = 20
+                    }
+                }else{
+                    height = 17
+                }
+               
+                
             } else {
-                height = 15
+                height = 17
             }
             
+
             
             NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "Showworkercheckin"), object: nil, queue: OperationQueue.main) {_ in
                 workercheckin = true
 //                height = 22
                 if UserDefaults.standard.string(forKey: "MainRole") == "SUPERVISOR" {
-                    height = 25
+                    
+                    if UserDefaults.standard.bool(forKey: "isCheckInApproved") == true{
+                        
+                        height = 25
+                        btnhight = 6
+                    }
+                    else{
+                        height = 22
+                        btnhight = 6
+                    }
+                    
                 } else {
                     height = 17
+                    btnhight = 6
                 }
                 spacerheight = 5
                
@@ -317,9 +602,11 @@ struct ContainerGroup: View {
                     workercheckin = true
     //                height = 22
                     if UserDefaults.standard.string(forKey: "MainRole") == "WORKER" {
-                        height = 23
+                        height = 22
+                        btnhight = 4
                     } else {
                         height = 17
+                        btnhight = 4
                     }
                     spacerheight = 5
                    
@@ -339,17 +626,25 @@ struct ContainerGroup: View {
                 
                 
                 Profileshow.toggle()
-                
-               // self.imageRectangle2Path = UserDefaults.standard.string(forKey: "imageurlw") ?? ""
+
             }
             
             
             NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "RemoveGpsView"), object: nil, queue: OperationQueue.main) {_ in
                 workercheckin = false
                 if UserDefaults.standard.string(forKey: "MainRole") == "SUPERVISOR" {
-                    height = 17
+                    if UserDefaults.standard.bool(forKey: "isCheckInApproved") == true{
+                        if  UserDefaults.standard.bool(forKey: "isBreak") == true{
+                            
+                            height = 17
+                        }else {
+                            height = 20
+                        }
+                    }else{
+                        height = 17
+                    }
                 } else {
-                    height = 15
+                    height = 17
                 }
                 spacerheight = 5
                 
@@ -362,9 +657,8 @@ struct ContainerGroup: View {
                 workercheckin = false
                // height = 22
                 
-                
                 if UserDefaults.standard.string(forKey: "MainRole") == "SUPERVISOR" {
-                    height = 17
+                    height = 20
                 } else {
                     height = 15
                 }
@@ -439,5 +733,15 @@ struct BottomRoundedRectangle: Shape {
         path.addLine(to: CGPoint(x: rect.minX, y: rect.minY))
 
         return path
+    }
+}
+
+struct CustomBottomRoundedRectangle: Shape {
+    var radius: CGFloat
+    var corners: UIRectCorner
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        return Path(path.cgPath)
     }
 }

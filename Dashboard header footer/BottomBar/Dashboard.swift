@@ -33,7 +33,11 @@ struct Dashboard: View {
         ZStack{
             VStack{
                
+                
+                
                 VStack{
+                    
+                    
                     
                     ContainerGroup()
                     
@@ -49,7 +53,30 @@ struct Dashboard: View {
                     case 0:
                
                               
-                        if (UserDefaults.standard.bool(forKey: "Checkedin") == true) {
+                        if (UserDefaults.standard.bool(forKey: "Checkedin") == true) && (UserDefaults.standard.bool(forKey: "isCheckInApproved") == true)  {
+                            
+                            if (UserDefaults.standard.bool(forKey: "isBreak") == false) {
+                                if (UserDefaults.standard.string(forKey: "Role") == "SUPERVISOR") &&                 (UserDefaults.standard.string(forKey: "MainRole") == "SUPERVISOR") {
+                                    SuperDashboard()
+                                    
+                                }
+                                
+                                else  {
+                                    WorkerDashBoard()
+                                    
+                                }
+                                
+                            }
+                            
+                            else if (UserDefaults.standard.bool(forKey: "isBreak") == true) {
+                                
+                                WorkkerCheckin()
+                            }
+                        }
+                        
+                        
+                        else if (UserDefaults.standard.bool(forKey: "Checkedin") == true) && (UserDefaults.standard.bool(forKey: "isCheckInApproved") == false) && (UserDefaults.standard.bool(forKey: "isWorkerOvertimeCheckIn") == true)   {
+                            
                             if (UserDefaults.standard.string(forKey: "Role") == "SUPERVISOR") &&                 (UserDefaults.standard.string(forKey: "MainRole") == "SUPERVISOR") {
                                 SuperDashboard()
                                 
@@ -59,8 +86,9 @@ struct Dashboard: View {
                                 WorkerDashBoard()
                                 
                             }
+
                         }
-                        
+                     
                         else
                         
                         {
@@ -142,7 +170,7 @@ struct Dashboard: View {
                 Spacer()
                     .frame(height: 10)
                 
-                if (UserDefaults.standard.bool(forKey: "Checkedin") == true) {
+                if (UserDefaults.standard.bool(forKey: "Checkedin") == true) && (UserDefaults.standard.bool(forKey: "isCheckInApproved") == true) && (UserDefaults.standard.bool(forKey: "isBreak") == false) {
                     
                     if (workercheckin==false){
                         
@@ -157,6 +185,23 @@ struct Dashboard: View {
                         
                     }
                 }
+                
+                else if    (UserDefaults.standard.bool(forKey: "Checkedin") == true) && (UserDefaults.standard.bool(forKey: "isCheckInApproved") == false) && (UserDefaults.standard.bool(forKey: "isWorkerOvertimeCheckIn") == true) {
+                    
+                    if (workercheckin==false){
+                        
+                        CustumTabView(selectedIndex: selectedIndex) { index in
+                            //                if index == 2 {
+                            //                    shouldShowModel = true
+                            //                    return
+                            //                }
+                            disableAllview()
+                            selectedIndex = index
+                        }
+                        
+                    }
+                }
+                
                 
                 
             }.edgesIgnoringSafeArea(.all)
@@ -197,6 +242,9 @@ struct Dashboard: View {
             NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "SetProfileView"), object: nil, queue: OperationQueue.main) {_ in
                 disableAllview()
                 ProfileView.toggle()
+//                workercheckin = false
+//                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RemoveGpsView"), object: self)
+
                 
             }
             
@@ -210,7 +258,7 @@ struct Dashboard: View {
             
             
             NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "RemoveGpsView"), object: nil, queue: OperationQueue.main) {_ in
-                workercheckin.toggle()
+                workercheckin = false
                 
             }
             

@@ -18,7 +18,7 @@ struct ContainerFrame: View {
                 .multilineTextAlignment(.center)
         }
         .padding(EdgeInsets(top: 6, leading: 6, bottom: 6, trailing: 6))
-        .frame(height: 27, alignment: .top)
+        .frame(height: 27)
         .background(Color(red: 0.43, green: 0.64, blue: 1.00, opacity: 1.00))
     }
 }

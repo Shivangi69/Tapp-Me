@@ -49,7 +49,7 @@ struct Notification: View {
                                         // ForEach(notificationlist.Notificationlist, id: \.self) { index in
                                         ForEach(Array(notificationlist.Notificationlist.enumerated()), id: \.element) { index, index1 in
                                             
-                                            VStack{
+                                            VStack(alignment: .leading){
                                                 
                                                 HStack {
                                                     Image("Ellipse 20")
@@ -124,6 +124,8 @@ struct Notification: View {
             } .navigationBarBackButtonHidden(true)
                 .navigationBarHidden(true)
                 .onAppear(){
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RemoveGpsView"), object: self)
+
                     notificationlist.getallnotification()
                 }
         }

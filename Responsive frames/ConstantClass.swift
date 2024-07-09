@@ -23,7 +23,8 @@ class ConstantClass{
     // Fonts
     struct AppFonts {
         static let light = Font.custom("Poppins-Black-Light",  size: Responsiveframes.responsiveFontSize(2.0))
-        
+        static let bolddata = Font.custom("Poppins-Black-Bold", size: 10)
+
 
         static let medium = Font.custom("Poppins-Black-Medium", size: Responsiveframes.responsiveFontSize(2.0))
         

@@ -19,9 +19,13 @@ import GoogleMaps
 import GooglePlaces
 import Network
 import AVFoundation
+import Combine
 
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate,MessagingDelegate, CLLocationManagerDelegate  {
     
+   
+    
+
     var window: UIWindow?
     var reachability: Reachability!
     
@@ -30,22 +34,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var networkAlertWindow: UIWindow? // Add this line
     
     var WorkerCheckvm = WorkerCheckinVM()
+    
+ 
+     var timer2: Timer?
 
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
-
+    
     var statuscheck = CompanylistbyemailVMgoogle()
     private let locationManager = CLLocationManager()
     
     //    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     
+    
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         
-        
+       
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers, .allowBluetooth])
             try AVAudioSession.sharedInstance().setActive(true)
-        } catch {
+        } 
+        catch {
             print("Failed to set audio session category: \(error)")
         }
         
@@ -56,26 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.pausesLocationUpdatesAutomatically = false
         
-        
-        //   networkViewModel.startMonitoring()
-        
-        // Add observer for reachability changes
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: .reachabilityChanged, object: nil)
-        
-        
-        
-        //     reachability = try? Reachability()
-        //
-        //        do {
-        //               reachability = try Reachability()
-        //               try reachability.startNotifier()
-        //           } catch {
-        //               print("Unable to start Reachability")
-        //           }
-        
-        // Add observer for reachability changes
-        //           NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: .reachabilityChanged, object: reachability)
-        //
         
         
         
@@ -138,25 +129,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         FirebaseConfiguration.shared.setLoggerLevel(.min)
-        //            downloadAndSavePDF()
         
         
-      
-
+        
+        
+        
         if  UserDefaults.standard.string(forKey: "login") == "yes"  {
             WorkerCheckvm.getsideid()
             statuscheck.GetallStatus()
-            
+            startTimer5()
         }
         
         return true
     }
-//    func applicationDidEnterBackground(_ application: UIApplication) {
-//        
-//        
-//
-//        locationManager.startUpdatingLocation()
-//    }
+    
+   
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        let contentView = ContentView()
+        
+        // Create the SwiftUI view that provides the window contents.
+        if let windowScene = scene as? UIWindowScene {
+            let window = UIWindow(windowScene: windowScene)
+            window.rootViewController = UIHostingController(rootView: contentView)
+            self.window = window
+            window.makeKeyAndVisible()
+        }
+    }
+    
+    
     
     func applicationDidEnterBackground(_ application: UIApplication) {
         backgroundTask = application.beginBackgroundTask(withName: "MyBackgroundTask") {
@@ -164,17 +164,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             application.endBackgroundTask(self.backgroundTask)
             self.backgroundTask = .invalid
         }
-
+        
         // Perform your task here
+        timer2?.invalidate()
 
         application.endBackgroundTask(self.backgroundTask)
         backgroundTask = .invalid
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
+//        startTimer5()
         locationManager.startUpdatingLocation()
     }
+
     
+//    func startTimer5() {
+//        timer2 = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
+//              self?.WorkerCheckvm.getsideid()
+//          }
+//      }
+//    
+//    
+    
+    func startTimer5() {
+        timer2 = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
+            // Timer fired, call API
+            self.statuscheck.GetallStatus()
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CallRefreshpage"), object: self)
+
+            print("calingstatus")
+        }
+    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
@@ -190,21 +210,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         UserDefaults.standard.setValue(isWithinPolygons, forKey: "isWithinPolygons")
         print(isWithinPolygons)
-        if polygons.count == 0 {
-            return
-            
-        }
         
-//        if (UserDefaults.standard.string(forKey: "workForces") == ""){
-//            return
-//        }
         if (UserDefaults.standard.string(forKey: "login") != "yes"){
             return
         }
-        if (UserDefaults.standard.string(forKey: "siteName") == ""){
+//        
+//        if polygons.count == 0 {
+//            return
+//            
+//        }
+        
+        if (UserDefaults.standard.bool(forKey: "isWorkerCheckedIn") == false) &&  (UserDefaults.standard.bool(forKey: "isWorkerOvertimeCheckIn") == false) &&   (UserDefaults.standard.bool(forKey: "isWorkerOvertimeCheckIn") == false){
+            return
+        }
+        if polygons.count == 0 {
             return
         }
         
+
         if (UserDefaults.standard.bool(forKey: "isOutside") == true){
             return
         }
@@ -213,73 +236,77 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             return
         }
         
-       
+        
+        if (UserDefaults.standard.bool(forKey: "isCheckInApproved") == false) &&  (UserDefaults.standard.bool(forKey: "isWorkerOvertimeCheckIn") == true){
+            return
+        }
         
         
-//        if  UserDefaults.standard.string(forKey: "login") == "yes"  {
-          
-            if  UserDefaults.standard.string(forKey: "login") == "yes"  {
-
-            if !isWithinPolygons {
+        
+        //        if  UserDefaults.standard.string(forKey: "login") == "yes"  {
+        
+        if  UserDefaults.standard.string(forKey: "login") == "yes"  {
             
-                if (UserDefaults.standard.bool(forKey: "isWorkerCheckedIn")) && !(UserDefaults.standard.bool(forKey: "isBreak"))   {
+            if !isWithinPolygons {
                 
-                scheduleNotification(timeInterval: 1, message: "You Are Out of Boundry!")
-                playSiren()
-                
-                if !apiCalled {
-                    startTimer()
-                    apiCalled = true
+                if (UserDefaults.standard.bool(forKey: "isCheckInApproved")) && !(UserDefaults.standard.bool(forKey: "isBreak"))   {
+                    
+                    scheduleNotification(timeInterval: 1, message: "You Are Out of Boundry!")
+                    playSiren()
+                    
+                    if !apiCalled {
+                        startTimer()
+                        apiCalled = true
+                    }
                 }
-            }
                 
                 if (UserDefaults.standard.bool(forKey: "isWorkerOvertimeCheckIn")) && !(UserDefaults.standard.bool(forKey: "isBreak"))   {
-                
                     
-                scheduleNotification(timeInterval: 1, message: "You Are Out of Boundry!")
-                playSiren()
-//                
-//                if !apiCalled {
-//                    apiCalled = true
-//                    startTimer()
-//                }
-            }
-                
-            
-        } else {
-            
-            stopTimer()
-            
-            if !(UserDefaults.standard.bool(forKey: "isWorkerCheckedIn")) &&  UserDefaults.standard.string(forKey: "login") == "yes" {
-                // Start the timer if it's not already running
-                
-                print(timer as Any)
-                if timer == nil {
-                    timer = Timer.scheduledTimer(withTimeInterval: 120.0, repeats: true) { _ in // 300 seconds = 5 minutes
-                        self.scheduleNotification(timeInterval: 1, message: "You Are In Boundry,you have to check in!")
-                        
-                        self.playSiren()
-                        self.alertCounter += 1
-                        if self.alertCounter >= 6 { // 6 alerts * 5 minutes = 30 minutes
-                            self.timer?.invalidate()
-                            self.timer = nil
-                            
-                        }
-                    }
-                    print("yessstimesr")
                     
+                    scheduleNotification(timeInterval: 1, message: "You Are Out of Boundry!")
+                    playSiren()
+                    //
+                    //                if !apiCalled {
+                    //                    apiCalled = true
+                    //                    startTimer()
+                    //                }
                 }
+                
+                
             } else {
-                self.timer?.invalidate()
-                self.timer = nil
-                self.alertCounter = 0
-                print("nooootimer")
+                
+                stopTimer()
+                
+                if !(UserDefaults.standard.bool(forKey: "isCheckInApproved")) &&  UserDefaults.standard.string(forKey: "login") == "yes" {
+                    // Start the timer if it's not already running
+                    
+                    print(timer as Any)
+                    if timer == nil {
+                        timer = Timer.scheduledTimer(withTimeInterval: 300.0, repeats: true) { _ in // 300 seconds = 5 minutes
+                            self.scheduleNotification(timeInterval: 1, message: "You Are In Boundry,you have to check in!")
+                            
+                            self.playSiren()
+                            self.alertCounter += 1
+                            if self.alertCounter >= 6 { // 6 alerts * 5 minutes = 30 minutes
+                                self.timer?.invalidate()
+                                self.timer = nil
+                                
+                            }
+                        }
+                        print("yessstimesr")
+                        
+                    }
+                } else {
+                    self.timer?.invalidate()
+                    self.timer = nil
+                    self.alertCounter = 0
+                    print("nooootimer")
+                }
+                
+                
+                
             }
-            
-            
-            
         }
-    }
         
         else {
             
@@ -290,21 +317,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         
     }
-
     
-     var polygons = [[[CLLocationCoordinate2D]]]()
+    
+    var polygons = [[[CLLocationCoordinate2D]]]()
     var polygonArr =  NSArray()
-
+    
     func populatePolygons() {
         self.polygons.removeAll()
         if let polygonArraa = UserDefaults.standard.array(forKey: "AllCoordinateArray") as? NSArray {
             polygonArr = polygonArraa
-
+            
         } else {
             // Handle the case where the array does not exist or casting fails
             print("The array for key 'AllCoordinateArray' does not exist or is not an NSArray.")
         }
-//        var coordinates = [[CLLocationCoordinate2D]]()
+        //        var coordinates = [[CLLocationCoordinate2D]]()
         for polygon in polygonArr {
             var coordinates = [[CLLocationCoordinate2D]]()
             if let polygonVertices = polygon as? NSArray {
@@ -325,28 +352,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
     
-     var timer: Timer?
-     var alertCounter = 0
-     var timerForApi: Timer? // Timer property to handle the 5-minute interval
-        var apiCalled: Bool = false // Flag to track if API call has been made
-      var audioPlayer: AVAudioPlayer?
-
+    var timer: Timer?
+    var alertCounter = 0
+    var timerForApi: Timer? // Timer property to handle the 5-minute interval
+    var apiCalled: Bool = false // Flag to track if API call has been made
+    var audioPlayer: AVAudioPlayer?
+    
     func startTimer() {
-            timerForApi = Timer.scheduledTimer(withTimeInterval: 120.0, repeats: false) { _ in
-                // Timer fired, call API
-                self.callAPI()
-            }
+        timerForApi = Timer.scheduledTimer(withTimeInterval: 300.0, repeats: false) { _ in
+            // Timer fired, call API
+            self.callAPI()
         }
-        func stopTimer() {
-            timerForApi?.invalidate()
-            timerForApi = nil
-        }
-        func callAPI() {
-            
-//           
-            breakon()
-          
-        }
+    }
+    func stopTimer() {
+        timerForApi?.invalidate()
+        timerForApi = nil
+    }
+    func callAPI() {
+        
+        //
+        breakon()
+        
+    }
     
     
     var workerId = (UserDefaults.standard.string(forKey: "id") ?? "")
@@ -355,7 +382,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         let str =  "api/checkinout/break/BREAK-IN/" + String(workerId)
         
-
+        
         AccountAPI.signin(servciename: str, nil){ res in
             
             switch res {
@@ -368,29 +395,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         let userdic = json["data"]
                         
                         // Extract the JWT token from your response
-                            
+                        
                         if let msg = json["message"].string {
                             print("msg is \(msg)")
                             Toast(text: msg).show()
-//                            self.sImageVisible = true
+                            //                            self.sImageVisible = true
                             
                             
                             UserDefaults.standard.setValue(true, forKey: "isBreak")
                             self.apiCalled = false
                             self.timerForApi = nil
-                //            status.isBreak = true
+                            //            status.isBreak = true
                             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "callBreakAuto"), object: self)
-
-                       }
-                       
+                            
+                        }
+                        
                     }
                     
                     else {
-                      
-                            if let msg = json["message"].string {
-                                print("msg is \(msg)")
-                                Toast(text: msg).show()
-                            }
+                        
+                        if let msg = json["message"].string {
+                            print("msg is \(msg)")
+                            Toast(text: msg).show()
+                        }
                         
                     }
                 }
@@ -409,56 +436,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func showAlert() {
         Toast(text: "jiferbhgferbjhiefr").show()
-       }
+    }
     
     func scheduleNotification(timeInterval: TimeInterval,message:String) {
-           let content = UNMutableNotificationContent()
-           content.title = "Alert"
-           content.body = message
-           content.sound = UNNotificationSound.default
-           
-           let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: false)
-           
-           let request = UNNotificationRequest(identifier: "notification", content: content, trigger: trigger)
-           
-           UNUserNotificationCenter.current().add(request) { (error) in
-               if let error = error {
-                   print("Error scheduling notification: \(error.localizedDescription)")
-               } else {
-                   print("Notification scheduled successfully")
-               }
-           }}
-    func scheduleNotificationrepeat(timeInterval: TimeInterval,message:String) {
-           let content = UNMutableNotificationContent()
-           content.title = "Alert"
-           content.body = message
-           content.sound = UNNotificationSound.default
-           
-           let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: true)
-           
-           let request = UNNotificationRequest(identifier: "notification", content: content, trigger: trigger)
-           
-           UNUserNotificationCenter.current().add(request) { (error) in
-               if let error = error {
-                   print("Error scheduling notification: \(error.localizedDescription)")
-               } else {
-                   print("Notification scheduled successfully")
-               }
-           }}
-    func playSiren() {
-            guard let url = Bundle.main.url(forResource: "YRL6BSM-siren", withExtension: "mp3") else { return }
-            
-            do {
-                audioPlayer = try AVAudioPlayer(contentsOf: url)
-                audioPlayer?.numberOfLoops = 0
-                audioPlayer?.play()
-            } catch {
-                print("Error playing siren sound: \(error.localizedDescription)")
+        let content = UNMutableNotificationContent()
+        content.title = "Alert"
+        content.body = message
+        content.sound = UNNotificationSound.default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: "notification", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { (error) in
+            if let error = error {
+                print("Error scheduling notification: \(error.localizedDescription)")
+            } else {
+                print("Notification scheduled successfully")
             }
+        }}
+    func scheduleNotificationrepeat(timeInterval: TimeInterval,message:String) {
+        let content = UNMutableNotificationContent()
+        content.title = "Alert"
+        content.body = message
+        content.sound = UNNotificationSound.default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: "notification", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { (error) in
+            if let error = error {
+                print("Error scheduling notification: \(error.localizedDescription)")
+            } else {
+                print("Notification scheduled successfully")
+            }
+        }}
+    func playSiren() {
+        guard let url = Bundle.main.url(forResource: "YRL6BSM-siren", withExtension: "mp3") else { return }
+        
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
+            audioPlayer?.numberOfLoops = 0
+            audioPlayer?.play()
+        } catch {
+            print("Error playing siren sound: \(error.localizedDescription)")
         }
+    }
     
     func isLocationWithinPolygons(_ coordinate: CLLocationCoordinate2D) -> Bool {
-            
+        
         for polygonVertices in polygons {
             let path = GMSMutablePath()
             for vertex in polygonVertices {
@@ -476,7 +503,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         return false
     }
-
+    
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return GIDSignIn.sharedInstance.handle(url)
         
@@ -486,42 +513,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             open: url,
             options: options
         )
-     }
-     
+    }
+    
     @objc func reachabilityChanged(_ notification: NSNotification) {
         print("Reachability changed") // Add this line for debugging
         guard let reachability = notification.object as? Reachability else { return }
-
+        
         if reachability.connection == .unavailable {
             // Show NetworkAlert when there's no internet connection
             showNetworkAlert()
         } else {
-          hideNetworkAlert()
+            hideNetworkAlert()
         }
     }
     
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-            if let error = error {
-                print("Google sign in error: \(error.localizedDescription)")
-                return
-            }
-            
-            // Perform actions after sign-in
-            print("Successfully signed in with Google!")
+        if let error = error {
+            print("Google sign in error: \(error.localizedDescription)")
+            return
         }
+        
+        // Perform actions after sign-in
+        print("Successfully signed in with Google!")
+    }
     
     func applicationWillTerminate(_ application: UIApplication) {
-           // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-           
-           // Perform any final cleanup tasks here before the app terminates.
-           // Save application data, close connections, etc.
+        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        // Perform any final cleanup tasks here before the app terminates.
+        // Save application data, close connections, etc.
+        timer?.invalidate()
+             timer = nil
         locationManager.startUpdatingLocation()
-           print("Application will terminate")
-       }
-
-
- func showNetworkAlert() {
+        print("Application will terminate")
+    }
+    
+    
+    func showNetworkAlert() {
         DispatchQueue.main.async {
             let alertWindow = UIWindow(frame: UIScreen.main.bounds)
             alertWindow.rootViewController = UIHostingController(rootView: NetworkAlert(networkManager: self.networkViewModel))
@@ -530,20 +559,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             self.networkAlertWindow = alertWindow
         }
     }
-
+    
     func hideNetworkAlert() {
         DispatchQueue.main.async {
             self.window?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
         }
     }
-
-
     
     
-//    func applicationWillTerminate(_ application: UIApplication) {
-//          // Stop the reachability notifier when the app terminates
-//          reachability.stopNotifier()
-//      }
+    
+    
+    //    func applicationWillTerminate(_ application: UIApplication) {
+    //          // Stop the reachability notifier when the app terminates
+    //          reachability.stopNotifier()
+    //      }
     func messaging(
         _ messaging: Messaging,
         didReceiveRegistrationToken fcmToken: String?
@@ -554,32 +583,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             object: nil,
             userInfo: tokenDict)
         print("Firebase registration token: \(fcmToken ?? "")")
-
+        
         UserDefaults.standard.set(fcmToken, forKey: "devicetoken")
     }
-
-//    var window: UIWindow?
-
+    
+    //    var window: UIWindow?
+    
     
     func userNotificationCenter(
-      _ center: UNUserNotificationCenter,
-      willPresent notification: UNNotification,
-      withCompletionHandler completionHandler:
-      @escaping (UNNotificationPresentationOptions) -> Void
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler:
+        @escaping (UNNotificationPresentationOptions) -> Void
     ) {
-
-      completionHandler([[.banner, .sound]])
+        
+        completionHandler([[.banner, .sound]])
     }
-
+    
     func userNotificationCenter(
-      _ center: UNUserNotificationCenter,
-      didReceive response: UNNotificationResponse,
-      withCompletionHandler completionHandler: @escaping () -> Void
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse,
+        withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-  
-      completionHandler()
+        
+        completionHandler()
     }
-
+    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
         let firebaseAuth = Auth.auth()
@@ -600,21 +629,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print("Token: ", token)
         
         UserDefaults.standard.set(token, forKey: "devicetoken")
-            
+        
     }
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-           print("Unable to register for remote notifications: \(error.localizedDescription)")
-       }
-
+        print("Unable to register for remote notifications: \(error.localizedDescription)")
+    }
+    
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-     
+        
         
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
-
-
+    
+    
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-   
+        
     }
+    
   
+    
 }
+
+

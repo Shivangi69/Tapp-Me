@@ -90,10 +90,10 @@ struct Profile: View {
                                     })
                                     {
                                         
-                                        if  statuscheck.homemodel?.isWorkerCheckedIn  == false {
+//                                        if  statuscheck.homemodel?.isWorkerCheckedIn  == false {
                                             Image("Arrow Left-8")
                                                 .frame(width: Responsiveframes.widthPercentageToDP(8), height: Responsiveframes.heightPercentageToDP(8))
-                                        }
+                                        
                                         
                                     }
                                     
@@ -601,7 +601,6 @@ struct Profile: View {
                                                             .lineLimit(1)
                                                             .font(Font.custom("Poppins-Black", size: Responsiveframes.responsiveFontSize(2.0)))
                                                         
-                                                        
                                                     }
                                                     .padding()
                                                     .frame(width: Responsiveframes.widthPercentageToDP(75))
@@ -887,25 +886,6 @@ struct Profile: View {
                                                         Spacer()
                                                         
 //
-//                                                        if let accountNumberString = profilemodel.bankdetails?.accountNumber {
-//                                                            let length = accountNumberString.count
-//                                                            
-//                                                            if length >= 4 {
-//                                                                let obscuredPart = String(repeating: "X", count: length - 4)
-//                                                                let lastFourDigits = String(accountNumberString.supix(4))
-//                                                                let maskedAccountNumber = "\(obscuredPart)-\(lastFourDigits)"
-//                                                                Text(maskedAccountNumber)
-//                                                                
-//                                                                            .foregroundColor(.gray)
-//                                                                            .lineLimit(1)
-//                                                                            .font(Font.custom("Poppins-Black", size: Responsiveframes.responsiveFontSize(2.0)))
-//                                                            } else {
-//                                                                // Handle case where account number is too short
-//                                                                Text(accountNumberString)
-//                                                                
-//                                                                
-//                                                            }
-//                                                        }
                                                         if let accountNumberString = profilemodel.bankdetails?.accountNumber {
                                                             let length = accountNumberString.count
                                                             
@@ -1174,15 +1154,12 @@ struct Profile: View {
                                         .padding()
                                         
                                     }
+                                    .contentShape(Rectangle()) // Make the entire HStack tappable
+
                                     .onTapGesture {
                                         settingshow.toggle()
                                         
                                     }
-                                    
-                                    //                                    .fullScreenCover(isPresented: $settings, content: {
-                                    //                                        WorkerSetting()
-                                    //                                    })
-                                    
                                     .frame(width: Responsiveframes.widthPercentageToDP(75))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 10)
@@ -1334,6 +1311,8 @@ struct Profile: View {
                         statuscheck.GetallStatus()
                         profilemodel.profilefetch()
                         profilemodel.WorkForceapi()
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RemoveGpsView"), object: self)
+
                     }
                     
                     NavigationLink(destination: WorkerSetting(), isActive: $settingshow) { EmptyView() }

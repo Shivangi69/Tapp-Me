@@ -3,20 +3,15 @@ import SwiftUI
 
 struct HomeView: View {
     
-    
     @StateObject var WorkerCheckin = WorkerCheckinVM()
     @StateObject var statuscheck = CompanylistbyemailVMgoogle()
     @State var showview = false
-
-    
-    
- //   var WorkerCheckvm = WorkerCheckinVM()
 
     var body: some View {
         NavigationView {
             ZStack {
                 
-                if WorkerCheckin.siteidarray.count != 0 && statuscheck.homemodel?.isWorkerCheckedIn == true {
+                if WorkerCheckin.siteidarray.count != 0 && statuscheck.homemodel?.isWorkerCheckedIn == true &&   statuscheck.homemodel?.isCheckInApproved == true {
                     
                     VStack{
                         
@@ -31,35 +26,7 @@ struct HomeView: View {
                     
                 }
                 else if WorkerCheckin.siteidarray.count != 0 {
-                    if UserDefaults.standard.bool(forKey: "isWithinPolygons") == false {
-                        VStack {
-                            Spacer()
-                            
-                            Image("Image 2")
-                                .resizable()
-                                .frame(width: ConstantClass.verybiglogo.logoWidth, height: ConstantClass.verybiglogo.logoHeight)
-                                .padding()
-                                .aspectRatio(contentMode: .fit)
-                                .cornerRadius(ConstantClass.verybiglogo.logoWidth / 2)
-                            
-                            Spacer()
-                        }
-                        .onTapGesture {
-                            WorkerCheckin.getsideid()
-                            if UserDefaults.standard.bool(forKey: "isWithinPolygons") == true {
-                           
-                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Showworkercheckin"), object: self)
-                   
-                            }
-                            else {
-                                Toast(text: "You are out of boundary").show()
-
-                            }
-                            
-                    
-                        }
-                        //                        .disabled(true) // Disables the VStack
-                    } else {
+                    if UserDefaults.standard.bool(forKey: "isWithinPolygons") == true {
                         
                         VStack {
                             Spacer()
@@ -76,9 +43,40 @@ struct HomeView: View {
                         .onTapGesture {
                             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Showworkercheckin"), object: self)
                         }
+                        
+                        
+                        
+                        //                        .disabled(true) // Disables the VStack
+                    } else {
+                        
+                        VStack {
+                            Spacer()
+                            
+                            Image("Image 2")
+                                .resizable()
+                                .frame(width: ConstantClass.verybiglogo.logoWidth, height: ConstantClass.verybiglogo.logoHeight)
+                                .padding()
+                                .aspectRatio(contentMode: .fit)
+                                .cornerRadius(ConstantClass.verybiglogo.logoWidth / 2)
+                            
+                            Spacer()
+                        }
+                        .onTapGesture {
+                            WorkerCheckin.getsideid()
+                            if UserDefaults.standard.bool(forKey: "isWithinPolygons") == true {
+                                
+                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Showworkercheckin"), object: self)
+                                
+                            }
+                            else {
+                                Toast(text: "You are out of boundary").show()
+                                
+                            }
+                            
+                        }
+                        
+                        
                     }
-            
-            
                 }
                 else {
                     

@@ -15,8 +15,8 @@ extension Login  {
     
     class LoginViewModel: ObservableObject {
         
-        @Published  var email = "Shivangi@gmail.com"
-        @Published  var password = "Shivi@69"
+        @Published  var email = ""
+        @Published  var password = ""
         @Published  var homemodel: HomeViewModel?
 
         @Published  var companyId = String()
@@ -209,7 +209,7 @@ extension Login  {
                             let userid =   UserDefaults.standard.string(forKey: "id") ?? ""
 
                             let str = "home/status/" + userid
-                            AccountAPI.getsignin(servciename: str, nil){ res in
+                            AccountAPI.getsigninwithoutLoader(servciename: str, nil){ res in
                                 switch res {
                                 case .success:
                                     
@@ -230,11 +230,16 @@ extension Login  {
                                             isOutside: events["isOutside"].boolValue,
                                             active: events["active"].boolValue,
                                             isworkerovertimecheckin: events["isWorkerOvertimeCheckIn"].boolValue,
-                                            status: events["status"].boolValue, workforceId: events["workforceId"].intValue
+                                            status: events["status"].boolValue,
+                                            isCheckInApproved: events["isCheckInApproved"].boolValue,
+
+                                            workforceId: events["workforceId"].intValue
                                         )
-                                        
+                                        print(self.homemodel)
+                            
                                         UserDefaults.standard.setValue(events["isWorkerCheckedIn"].boolValue, forKey: "Checkedin")
                                         UserDefaults.standard.setValue(events["isWorkerCheckedIn"].boolValue, forKey: "isWorkerCheckedIn")
+                                        UserDefaults.standard.setValue(events["isCheckInApproved"].boolValue, forKey: "isCheckInApproved")
                                         UserDefaults.standard.setValue(events["active"].boolValue, forKey: "active")
 
                                         UserDefaults.standard.setValue(events["isBreak"].boolValue, forKey: "isBreak")
@@ -439,7 +444,7 @@ class Connectsociallogin: ObservableObject {
         
   //  http://62.171.153.83:8080/tappme-api-development/home/status/59
 
-        AccountAPI.getsignin(servciename: str, nil){ res in
+        AccountAPI.getsigninwithoutLoader(servciename: str, nil){ res in
             switch res {
             case .success:
                 
@@ -463,13 +468,17 @@ class Connectsociallogin: ObservableObject {
                         isOutside: events["isOutside"].boolValue,
                         active: events["active"].boolValue,
                         isworkerovertimecheckin: events["isWorkerOvertimeCheckIn"].boolValue,
+                        
                         status: events["status"].boolValue,
+                        isCheckInApproved: events["isCheckInApproved"].boolValue,
                         workforceId: events["workforceId"].intValue
 
                     )
                     
+                   
                     UserDefaults.standard.setValue(events["isWorkerCheckedIn"].boolValue, forKey: "Checkedin")
                     UserDefaults.standard.setValue(events["isWorkerCheckedIn"].boolValue, forKey: "isWorkerCheckedIn")
+                    UserDefaults.standard.setValue(events["isCheckInApproved"].boolValue, forKey: "isCheckInApproved")
                     UserDefaults.standard.setValue(events["isBreak"].boolValue, forKey: "isBreak")
                     UserDefaults.standard.setValue(events["isOutside"].boolValue, forKey: "isOutside")
                     UserDefaults.standard.setValue(events["isWorkerOvertimeCheckIn"].boolValue, forKey: "isWorkerOvertimeCheckIn")
@@ -665,7 +674,7 @@ class Connectsociallogin: ObservableObject {
                             let userid =   UserDefaults.standard.string(forKey: "id") ?? ""
 
                             let str = "home/status/" + userid
-                            AccountAPI.getsignin(servciename: str, nil){ res in
+                            AccountAPI.getsigninwithoutLoader(servciename: str, nil){ res in
                                 switch res {
                                 case .success:
                                     
@@ -686,11 +695,14 @@ class Connectsociallogin: ObservableObject {
                                             isOutside: events["isOutside"].boolValue,
                                             active: events["active"].boolValue, 
                                             isworkerovertimecheckin: events["isWorkerOvertimeCheckIn"].boolValue,               status: events["status"].boolValue,
+                                            isCheckInApproved: events["isCheckInApproved"].boolValue,
                                             workforceId: events["workforceId"].intValue
                                         )
                                         
+                                   
                                         UserDefaults.standard.setValue(events["isWorkerCheckedIn"].boolValue, forKey: "Checkedin")
                                         UserDefaults.standard.setValue(events["isWorkerCheckedIn"].boolValue, forKey: "isWorkerCheckedIn")
+                                        UserDefaults.standard.setValue(events["isCheckInApproved"].boolValue, forKey: "isCheckInApproved")
                                         UserDefaults.standard.setValue(events["isBreak"].boolValue, forKey: "isBreak")
                                         UserDefaults.standard.setValue(events["isOutside"].boolValue, forKey: "isOutside")
                                         UserDefaults.standard.setValue(events["isWorkerOvertimeCheckIn"].boolValue, forKey: "isWorkerOvertimeCheckIn")
@@ -987,12 +999,11 @@ class CompanylistbyemailVMgoogle: ObservableObject {
         
         let userid =   UserDefaults.standard.string(forKey: "id") ?? ""
         
-        
         let str = "home/status/" + userid
         
   //  http://62.171.153.83:8080/tappme-api-development/home/status/59
 
-        AccountAPI.getsignin(servciename: str, nil){ res in
+        AccountAPI.getsigninwithoutLoader(servciename: str, nil){ res in
             switch res {
             case .success:
                 
@@ -1001,7 +1012,7 @@ class CompanylistbyemailVMgoogle: ObservableObject {
                     
                     let events = json["data"]
                     
-                    print (json)
+//                    print (json)
                     
                     self.homemodel = HomeViewModel(
               
@@ -1017,18 +1028,15 @@ class CompanylistbyemailVMgoogle: ObservableObject {
                         active: events["active"].boolValue,
                         isworkerovertimecheckin: events["isWorkerOvertimeCheckIn"].boolValue,
                         status: events["status"].boolValue,
+                        isCheckInApproved: events["isCheckInApproved"].boolValue,
                         workforceId: events["workforceId"].intValue
 
 
                     )
-                    
-                    
-                    
-                    
-                    
-                    
+                        
                     UserDefaults.standard.setValue(events["isWorkerCheckedIn"].boolValue, forKey: "Checkedin")
                     UserDefaults.standard.setValue(events["isWorkerCheckedIn"].boolValue, forKey: "isWorkerCheckedIn")
+                    UserDefaults.standard.setValue(events["isCheckInApproved"].boolValue, forKey: "isCheckInApproved")
                     UserDefaults.standard.setValue(events["isBreak"].boolValue, forKey: "isBreak")
                     UserDefaults.standard.setValue(events["isOutside"].boolValue, forKey: "isOutside")
                     UserDefaults.standard.setValue(events["isWorkerOvertimeCheckIn"].boolValue, forKey: "isWorkerOvertimeCheckIn")
@@ -1057,14 +1065,12 @@ class CompanylistbyemailVMgoogle: ObservableObject {
         
         
         let str = "api/checkinout/daily-hours?userId=" + userid + "&date=" + currentdate
-
         
-        AccountAPI.getsignin(servciename: str, nil){ res in
+        AccountAPI.getsigninwithoutLoader(servciename: str, nil){ res in
             switch res {
             case .success:
                 
                 if let json = res.value{
-              print("Josn",json)
                     
                     let events = json["data"]
                     

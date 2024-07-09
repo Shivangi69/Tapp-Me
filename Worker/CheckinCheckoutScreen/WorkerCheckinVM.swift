@@ -8,10 +8,13 @@
 import Foundation
 import Alamofire
 import GoogleMaps
+import Combine
 import GoogleSignIn
     
     class WorkerCheckinVM: ObservableObject {
         
+//         var timer: DispatchSourceTimer?
+
         @Published var workerId = (UserDefaults.standard.string(forKey: "id") ?? "")
         @Published var siteId = Int()
 
@@ -34,84 +37,165 @@ import GoogleSignIn
         @Published  var siteidarray: [SiteidModel] = []
         var siteID1: Int? 
         @Published  var polygonvertices: [PolygonVertex1] = []
-
-        func getsideid() {
-            let userid = UserDefaults.standard.string(forKey: "id") ?? ""
-            let str = "user/active/sites/" + userid
-            self.showMAP = false
-            AccountAPI.getsignin(servciename: str, nil) { res in
-                switch res {
-                case .success:
-                    self.AllCoordinateArray.removeAllObjects()
-                    if let json = res.value {
-                       // print("Josn", json)
-                        if json["statusCode"] == 200 || json["status"] == true {
-
-                            let siteidarr = json["data"]
-                            
-                            
-                            self.siteidarray = []
-                            for i in siteidarr {
-                                self.polygonvertices = []
-                                let polygonvetx = i.1["polygonVertices"]
-                                
-                                let sitearr = SiteidModel(siteID: i.1["siteId"].intValue,
-                                                          siteName: i.1["siteName"].stringValue,
-                                                          boundaryAddress: i.1["boundaryAddress"].stringValue,
-                                                          centerLatitude: i.1["centerLatitude"].doubleValue,
-                                                          centerLongitude: i.1["centerLongitude"].doubleValue,
-                                                          radius: i.1["radius"].intValue,
-                                                          zoomLevel: i.1["zoomLevel"].intValue,
-                                                          polygonVertices: self.polygonvertices,
-                                                          workForces: i.1["workForces"].stringValue,
-                                                          active: i.1["active"].boolValue )
-                                
-                                self.siteidarray.append(sitearr)
-                                self.siteID1 = i.1["siteId"].intValue
-
-                                UserDefaults.standard.set(i.1["centerLatitude"].intValue, forKey: "centerLatitude")
-                                UserDefaults.standard.set(i.1["centerLongitude"].intValue, forKey: "centerLongitude")
-                                UserDefaults.standard.set(i.1["workForces"].stringValue, forKey: "workForces")
-                                UserDefaults.standard.set(i.1["siteName"].stringValue, forKey: "siteName")
-
-
-                                
-                                UserDefaults.standard.set(i.1["siteId"].intValue, forKey: "siteId")
-                                print(i.1["siteId"].intValue)
-                                
-                                var CoordinateArray = NSMutableArray()
-                                for j in polygonvetx {
-                                    let acc = PolygonVertex1(
-                                        lat: j.1["lat"].doubleValue,
-                                        lng: j.1["lng"].doubleValue
-                                    )
-                                    var dic = NSDictionary()
-                                    dic = ["lat": j.1["lat"].doubleValue, "lng": j.1["lng"].doubleValue]
-                                    CoordinateArray.add(dic)
-                                    self.polygonvertices.append(acc)
-                                    
-                                }
-                                self.AllCoordinateArray.add(CoordinateArray)
-
-                            }
-                            UserDefaults.standard.setValue(self.AllCoordinateArray, forKey: "AllCoordinateArray")
-
-                            self.showMAP = true
-                            self.showview = true
-                            
-                        } else {
-                            
-                            let errormessage = json["message"].stringValue // Extract error message here
-                            self.errormessage = errormessage // Assign error message to errormessage variable
-                            print("msg is \(self.errormessage)")
-                        }
-                    }
-                case let .failure(error):
-                    print(error)
-                }
-            }
-        }
+//
+//        init() {
+//            startTimer()
+//        }
+//        func getsideid() {
+//            let userid = UserDefaults.standard.string(forKey: "id") ?? ""
+//            let str = "user/active/sites/" + userid
+//            self.showMAP = false
+//            AccountAPI.getsignin(servciename: str, nil) { res in
+//                switch res {
+//                case .success:
+//                    self.AllCoordinateArray.removeAllObjects()
+//                    if let json = res.value {
+//                       // print("Josn", json)
+//                        if json["statusCode"] == 200 || json["status"] == true {
+//
+//                            let siteidarr = json["data"]
+//                            
+//                            self.siteidarray = []
+//                            for i in siteidarr {
+//                                self.polygonvertices = []
+//                                let polygonvetx = i.1["polygonVertices"]
+//                                
+//                                let sitearr = SiteidModel(siteID: i.1["siteId"].intValue,
+//                                                          siteName: i.1["siteName"].stringValue,
+//                                                          boundaryAddress: i.1["boundaryAddress"].stringValue,
+//                                                          centerLatitude: i.1["centerLatitude"].doubleValue,
+//                                                          centerLongitude: i.1["centerLongitude"].doubleValue,
+//                                                          radius: i.1["radius"].intValue,
+//                                                          zoomLevel: i.1["zoomLevel"].intValue,
+//                                                          polygonVertices: self.polygonvertices,
+//                                                          workForces: i.1["workForces"].stringValue,
+//                                                          active: i.1["active"].boolValue )
+//                                
+//                                self.siteidarray.append(sitearr)
+//                                self.siteID1 = i.1["siteId"].intValue
+//
+//                                UserDefaults.standard.set(i.1["centerLatitude"].intValue, forKey: "centerLatitude")
+//                                UserDefaults.standard.set(i.1["centerLongitude"].intValue, forKey: "centerLongitude")
+//                                UserDefaults.standard.set(i.1["workForces"].stringValue, forKey: "workForces")
+//                                UserDefaults.standard.set(i.1["siteName"].stringValue, forKey: "siteName")
+//
+//
+//                                
+//                                UserDefaults.standard.set(i.1["siteId"].intValue, forKey: "siteId")
+//                                print(i.1["siteId"].intValue)
+//                                
+//                                var CoordinateArray = NSMutableArray()
+//                                for j in polygonvetx {
+//                                    let acc = PolygonVertex1(
+//                                        lat: j.1["lat"].doubleValue,
+//                                        lng: j.1["lng"].doubleValue
+//                                    )
+//                                    var dic = NSDictionary()
+//                                    dic = ["lat": j.1["lat"].doubleValue, "lng": j.1["lng"].doubleValue]
+//                                    CoordinateArray.add(dic)
+//                                    self.polygonvertices.append(acc)
+//                                    
+//                                }
+//                                self.AllCoordinateArray.add(CoordinateArray)
+//
+//                            }
+//                            UserDefaults.standard.setValue(self.AllCoordinateArray, forKey: "AllCoordinateArray")
+//
+//                            self.showMAP = true
+//                            self.showview = true
+//                            
+//                        } else {
+//                            
+//                            let errormessage = json["message"].stringValue // Extract error message here
+//                            self.errormessage = errormessage // Assign error message to errormessage variable
+//                            print("msg is \(self.errormessage)")
+//                        }
+//                    }
+//                case let .failure(error):
+//                    print(error)
+//                }
+//            }
+//        }
         
+        func getsideid() {
+              let userid = UserDefaults.standard.string(forKey: "id") ?? ""
+              let str = "user/active/sites/" + userid
+              self.showMAP = false
+              AccountAPI.getsigninwithoutLoader(servciename: str, nil) { res in
+                  DispatchQueue.main.async {
+                      switch res {
+                      case .success:
+                          self.AllCoordinateArray.removeAllObjects()
+                          if let json = res.value {
+                              if json["statusCode"] == 200 || json["status"] == true {
+                                  let siteidarr = json["data"]
+                                  self.siteidarray = []
+                                  for i in siteidarr {
+                                      self.polygonvertices = []
+                                      let polygonvetx = i.1["polygonVertices"]
+                                      let sitearr = SiteidModel(
+                                          siteID: i.1["siteId"].intValue,
+                                          siteName: i.1["siteName"].stringValue,
+                                          boundaryAddress: i.1["boundaryAddress"].stringValue,
+                                          centerLatitude: i.1["centerLatitude"].doubleValue,
+                                          centerLongitude: i.1["centerLongitude"].doubleValue,
+                                          radius: i.1["radius"].intValue,
+                                          zoomLevel: i.1["zoomLevel"].intValue,
+                                          polygonVertices: self.polygonvertices,
+                                          workForces: i.1["workForces"].stringValue,
+                                          active: i.1["active"].boolValue
+                                      )
+                                      self.siteidarray.append(sitearr)
+                                      self.siteID1 = i.1["siteId"].intValue
+
+                                      UserDefaults.standard.set(i.1["centerLatitude"].intValue, forKey: "centerLatitude")
+                                      UserDefaults.standard.set(i.1["centerLongitude"].intValue, forKey: "centerLongitude")
+                                      UserDefaults.standard.set(i.1["workForces"].stringValue, forKey: "workForces")
+                                      UserDefaults.standard.set(i.1["siteName"].stringValue, forKey: "siteName")
+                                      UserDefaults.standard.set(i.1["siteId"].intValue, forKey: "siteId")
+
+                                      var CoordinateArray = NSMutableArray()
+                                      for j in polygonvetx {
+                                          let acc = PolygonVertex1(
+                                              lat: j.1["lat"].doubleValue,
+                                              lng: j.1["lng"].doubleValue
+                                          )
+                                          var dic = NSDictionary()
+                                          dic = ["lat": j.1["lat"].doubleValue, "lng": j.1["lng"].doubleValue]
+                                          CoordinateArray.add(dic)
+                                          self.polygonvertices.append(acc)
+                                      }
+                                      self.AllCoordinateArray.add(CoordinateArray)
+                                  }
+                                  UserDefaults.standard.setValue(self.AllCoordinateArray, forKey: "AllCoordinateArray")
+                                  self.showMAP = true
+                                  self.showview = true
+
+                              } else {
+                                  self.errormessage = json["message"].stringValue
+                                  print("msg is \(self.errormessage)")
+                              }
+                          }
+                      case let .failure(error):
+                          print(error)
+                      }
+                  }
+              }
+          }
+
+//          deinit {
+//              timer?.cancel()
+//              timer = nil
+//          }
+//      
+        
+        
+        
+//        deinit {
+//            timer?.cancel()
+//            timer = nil
+//        }
+      
         func OvertimecheckinandoutApi()  {
             //@Environment(\.managedObjectContext) var moc
             
@@ -139,6 +223,8 @@ import GoogleSignIn
 
                            }
                             
+                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RemoveGpsView"), object: self)
+
              
                             
                             
@@ -152,9 +238,12 @@ import GoogleSignIn
 //                                UserDefaults.standard.setValue(false, forKey: "isWorkerCheckedOut")
 //                                UserDefaults.standard.setValue(false, forKey: "isWorkerOvertimeCheckIn")
 //                                
-                            }else{
+                            }
+                            else{
                                 self.showcheckoutbutton = false
                                 UserDefaults.standard.setValue(false, forKey: "isWorkerCheckedIn")
+                                UserDefaults.standard.setValue(false, forKey: "isCheckInApproved")
+
                                 UserDefaults.standard.setValue(false, forKey: "isWorkerCheckedOut")
                                 UserDefaults.standard.setValue(false, forKey: "isWorkerOvertimeCheckIn")
 //
@@ -229,16 +318,21 @@ import GoogleSignIn
 //                                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "calldashboard"), object: self)
 //                                    
 //                                }
-                                UserDefaults.standard.setValue(true, forKey: "isWorkerCheckedIn")
+                                
+//                                UserDefaults.standard.setValue(false, forKey: "isWorkerCheckedIn")
+//                                UserDefaults.standard.setValue(true, forKey: "isCheckInApproved")
+
                                 UserDefaults.standard.setValue(false, forKey: "isWorkerCheckedOut")
                                 UserDefaults.standard.setValue(false, forKey: "isWorkerOvertimeCheckIn")
                                 
                             }else{
                                 self.showcheckoutbutton = false
 
-                                UserDefaults.standard.setValue(false, forKey: "isWorkerCheckedIn")
-                                UserDefaults.standard.setValue(true, forKey: "isWorkerCheckedOut")
-                                UserDefaults.standard.setValue(false, forKey: "isWorkerOvertimeCheckIn")
+//                                UserDefaults.standard.setValue(false, forKey: "isWorkerCheckedIn")
+////                                UserDefaults.standard.setValue(false, forKey: "isWorkerCheckedOut")
+//                                UserDefaults.standard.setValue(false, forKey: "isCheckInApproved")
+//
+//                                UserDefaults.standard.setValue(false, forKey: "isWorkerOvertimeCheckIn")
 
                             }
                             
@@ -362,6 +456,7 @@ import GoogleSignIn
                                 
                                 
                                 UserDefaults.standard.setValue(true, forKey: "isBreak")
+
                            }
                            
                         }
@@ -403,8 +498,9 @@ import GoogleSignIn
                         if json["status"] == true {
                             let userdic = json["data"]
                             
-                            // Extract the JWT token from your response
+                         
                             UserDefaults.standard.setValue(false, forKey: "isBreak")
+                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "calldashboard"), object: self)
 
                             if let msg = json["message"].string {
                                 print("msg is \(msg)")
@@ -443,7 +539,16 @@ import GoogleSignIn
             /// To subscribe, open CodeAI MacOS app and tap SUBSCRIBE
         }
          
-        
+      
+//        func startTimer() {
+//              let queue = DispatchQueue(label: "com.example.apiTimer", attributes: .concurrent)
+//              timer = DispatchSource.makeTimerSource(queue: queue)
+//              timer?.schedule(deadline: .now(), repeating: 5)
+//              timer?.setEventHandler { [weak self] in
+//                  self?.getsideid()
+//              }
+//              timer?.resume()
+//          }
         
     }
 
